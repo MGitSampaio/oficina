@@ -1,0 +1,22 @@
+[package]
+name = "oficina"
+version = "0.1.0"
+edition = "2021"
+description = "Sistema de gestão para oficina de conserto de eletrodomésticos"
+
+[dependencies]
+eframe = { version = "0.37", default-features = false, features = [
+    "accesskit",
+    "clipboard",
+    "default_fonts",
+    "glow",
+    "links",
+    "wayland",
+    "x11",
+] }
+egui = "0.37"
+rusqlite = { version = "0.32", features = ["bundled"] }
+chrono = "0.4"
+
+[profile.release]
+opt-level = 2
