@@ -4,6 +4,8 @@ Programa desktop em **Rust + egui + SQLite** para uma pequena oficina de consert
 eletrodomésticos. Controla clientes, equipamentos recebidos, orçamentos e pagamentos,
 com interface em português (pt-BR) e dados salvos localmente.
 
+Repositório: <https://github.com/MGitSampaio/oficina>
+
 ![status](https://img.shields.io/badge/interface-egui-2563EB)
 ![status](https://img.shields.io/badge/banco-SQLite-15803D)
 
