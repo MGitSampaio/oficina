@@ -22,7 +22,7 @@ Repositório: <https://github.com/MGitSampaio/oficina>
 - **Busca e filtros** em todas as listas, com atalhos a partir de cada orçamento.
 - **Cadastro rápido** em janelas modais com validação e avisos de erro.
 - **Exclusão protegida** por confirmação; exclusões em cascata avisam o que será removido.
-- **Dados de exemplo** opcionais para conhecer o sistema.
+- **Dados de exemplo** opcionais via `--demo`, para conhecer o sistema.
 
 ## Requisitos
 

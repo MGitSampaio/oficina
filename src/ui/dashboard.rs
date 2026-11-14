@@ -14,7 +14,6 @@ impl App {
         let mut new_quote = false;
         let mut new_client = false;
         let mut new_payment = false;
-        let mut seed = false;
         let mut edit_quote: Option<i64> = None;
         let mut pay_quote: Option<i64> = None;
         let mut go_clients = false;
@@ -47,13 +46,6 @@ impl App {
                                 .clicked()
                             {
                                 new_client = true;
-                            }
-                            ui.add_space(10.0);
-                            if ui
-                                .add(w::secondary_button("Carregar dados de exemplo"))
-                                .clicked()
-                            {
-                                seed = true;
                             }
                             ui.add_space(26.0);
                             ui.label(
@@ -319,15 +311,6 @@ impl App {
         }
         if let Some(id) = pay_quote {
             self.open_payment_for_quote(id);
-        }
-        if seed {
-            match self.store.seed_demo() {
-                Ok(()) => {
-                    self.reload();
-                    self.notify_success("Dados de exemplo carregados.");
-                }
-                Err(err) => self.notify_error(format!("Erro ao carregar exemplos: {err}")),
-            }
         }
         if go_clients {
             self.page = crate::app::Page::Clients;
