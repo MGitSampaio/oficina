@@ -137,16 +137,6 @@ impl App {
                                                 .size(10.5)
                                                 .color(MUTED),
                                             );
-                                            if !quote.description.is_empty() {
-                                                ui.label(
-                                                    RichText::new(w::ellipsis(
-                                                        &quote.description,
-                                                        36,
-                                                    ))
-                                                    .size(10.0)
-                                                    .color(FAINT),
-                                                );
-                                            }
                                             ui.label(
                                                 RichText::new(format!(
                                                     "Aberto em {}",

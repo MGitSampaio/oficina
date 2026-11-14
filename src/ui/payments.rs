@@ -98,9 +98,8 @@ impl App {
                                             }
                                             ui.label(
                                                 RichText::new(format!(
-                                                    "#{} · {}",
-                                                    payment.quote_id,
-                                                    w::ellipsis(&payment.quote_description, 38)
+                                                    "Orçamento #{}",
+                                                    payment.quote_id
                                                 ))
                                                 .size(10.5)
                                                 .color(MUTED),
