@@ -206,7 +206,7 @@ pub fn input(ui: &mut Ui, value: &mut String, hint: &str) -> Response {
     ui.add(
         TextEdit::singleline(value)
             .hint_text(RichText::new(hint).color(FAINT))
-            .margin(Margin::symmetric(10, 7))
+            .margin(Margin::symmetric(10, 6))
             .desired_width(f32::INFINITY),
     )
 }
@@ -216,7 +216,7 @@ pub fn input_multiline(ui: &mut Ui, value: &mut String, hint: &str, rows: usize)
     ui.add(
         TextEdit::multiline(value)
             .hint_text(RichText::new(hint).color(FAINT))
-            .margin(Margin::symmetric(10, 7))
+            .margin(Margin::symmetric(10, 6))
             .desired_width(f32::INFINITY)
             .desired_rows(rows),
     )
@@ -225,9 +225,9 @@ pub fn input_multiline(ui: &mut Ui, value: &mut String, hint: &str, rows: usize)
 /// Bloco de formulário: rótulo + campo + espaçamento.
 pub fn field(ui: &mut Ui, label: &str, add: impl FnOnce(&mut Ui)) {
     field_label(ui, label);
-    ui.add_space(3.0);
+    ui.add_space(2.0);
     add(ui);
-    ui.add_space(9.0);
+    ui.add_space(7.0);
 }
 
 /// Linha divisória sutil.

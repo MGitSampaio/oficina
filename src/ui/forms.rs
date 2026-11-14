@@ -450,33 +450,33 @@ impl QuoteForm {
         });
 
         let total = self.total_preview();
-        Frame::new()
-            .fill(SOFT)
-            .stroke(egui::Stroke::new(1.0, BORDER))
-            .corner_radius(CornerRadius::same(10))
-            .inner_margin(Margin::symmetric(12, 10))
-            .show(ui, |ui| {
-                ui.set_min_width(ui.available_width());
-                ui.horizontal(|ui| {
-                    ui.label(RichText::new("Total do orçamento").size(12.0).color(MUTED));
-                    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                        let text = total.map(money).unwrap_or_else(|| "—".to_string());
-                        ui.label(RichText::new(text).size(18.0).strong().color(PRIMARY));
+        ui.columns(2, |cols| {
+            Frame::new()
+                .fill(SOFT)
+                .stroke(egui::Stroke::new(1.0, BORDER))
+                .corner_radius(CornerRadius::same(10))
+                .inner_margin(Margin::symmetric(12, 10))
+                .show(&mut cols[0], |ui| {
+                    ui.set_min_width(ui.available_width());
+                    ui.horizontal(|ui| {
+                        ui.label(RichText::new("Total do orçamento").size(12.0).color(MUTED));
+                        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                            let text = total.map(money).unwrap_or_else(|| "—".to_string());
+                            ui.label(RichText::new(text).size(18.0).strong().color(PRIMARY));
+                        });
                     });
                 });
+
+            w::field(&mut cols[1], "Situação", |ui| {
+                egui::ComboBox::from_id_salt("form_quote_status")
+                    .width(ui.available_width())
+                    .selected_text(self.status.label())
+                    .show_ui(ui, |ui| {
+                        for status in QuoteStatus::ALL {
+                            ui.selectable_value(&mut self.status, status, status.label());
+                        }
+                    });
             });
-
-        ui.add_space(10.0);
-
-        w::field(ui, "Situação", |ui| {
-            egui::ComboBox::from_id_salt("form_quote_status")
-                .width(200.0)
-                .selected_text(self.status.label())
-                .show_ui(ui, |ui| {
-                    for status in QuoteStatus::ALL {
-                        ui.selectable_value(&mut self.status, status, status.label());
-                    }
-                });
         });
 
         error_line(ui, &self.error);
@@ -729,5 +729,73 @@ impl PaymentForm {
             }
         };
         Ok(message.to_string())
+    }
+}
+
+#[cfg(test)]
+mod form_fit_tests {
+    use super::*;
+
+    fn height(width: f32, add: impl FnOnce(&mut Ui)) -> f32 {
+        let ctx = egui::Context::default();
+        crate::theme::apply(&ctx);
+        let mut input = egui::RawInput::default();
+        input.screen_rect = Some(egui::Rect::from_min_size(
+            egui::Pos2::ZERO,
+            egui::vec2(1220.0, 790.0),
+        ));
+
+        let mut measured = 0.0;
+        let mut add = Some(add);
+        let mut output = ctx.run_ui(input, |ui| {
+            ui.set_width(width);
+            if let Some(add) = add.take() {
+                add(ui);
+            }
+            measured = ui.min_rect().height();
+        });
+        output.textures_delta.clear();
+        measured
+    }
+
+    /// Garante que os formulários caibam inteiros em uma janela de 640 px de
+    /// altura, sem acionar a barra de rolagem dos modais.
+    #[test]
+    fn forms_fit_without_scrolling() {
+        let heights = [
+            (
+                "cliente",
+                height(496.0, |ui| {
+                    let _ = ClientForm::new().show(ui);
+                }),
+            ),
+            (
+                "equipamento",
+                height(556.0, |ui| {
+                    let _ = EquipmentForm::new(None).show(ui, &[]);
+                }),
+            ),
+            (
+                "orçamento",
+                height(616.0, |ui| {
+                    let _ = QuoteForm::new().show(ui, &[], &[]);
+                }),
+            ),
+            (
+                "pagamento",
+                height(556.0, |ui| {
+                    let _ = PaymentForm::new().show(ui, &[]);
+                }),
+            ),
+        ];
+
+        // 640 px de janela − 44 da moldura − 52 do título − 24 de respiro.
+        let budget = 520.0;
+        for (name, value) in heights {
+            assert!(
+                value <= budget,
+                "formulário de {name} mede {value:.1} px (limite {budget:.0} px)"
+            );
+        }
     }
 }

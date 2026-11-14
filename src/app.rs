@@ -538,9 +538,9 @@ impl App {
             match &mut dialog {
                 Dialog::Client(form) => {
                     let title = form.title();
-                    let response = modal_shell(ctx, "dialog_client", 500.0, |ui| {
+                    let response = modal_shell(ctx, "dialog_client", 540.0, |ui| {
                         ui.label(RichText::new(title).size(19.0).strong());
-                        ui.add_space(14.0);
+                        ui.add_space(10.0);
                         form.show(ui)
                     });
                     match response {
@@ -550,9 +550,9 @@ impl App {
                 }
                 Dialog::Equipment(form) => {
                     let title = form.title();
-                    let response = modal_shell(ctx, "dialog_equipment", 540.0, |ui| {
+                    let response = modal_shell(ctx, "dialog_equipment", 600.0, |ui| {
                         ui.label(RichText::new(title).size(19.0).strong());
-                        ui.add_space(14.0);
+                        ui.add_space(10.0);
                         form.show(ui, clients)
                     });
                     match response {
@@ -562,9 +562,9 @@ impl App {
                 }
                 Dialog::Quote(form) => {
                     let title = form.title();
-                    let response = modal_shell(ctx, "dialog_quote", 600.0, |ui| {
+                    let response = modal_shell(ctx, "dialog_quote", 660.0, |ui| {
                         ui.label(RichText::new(title).size(19.0).strong());
-                        ui.add_space(14.0);
+                        ui.add_space(10.0);
                         form.show(ui, clients, equipments)
                     });
                     match response {
@@ -574,9 +574,9 @@ impl App {
                 }
                 Dialog::Payment(form) => {
                     let title = form.title();
-                    let response = modal_shell(ctx, "dialog_payment", 540.0, |ui| {
+                    let response = modal_shell(ctx, "dialog_payment", 600.0, |ui| {
                         ui.label(RichText::new(title).size(19.0).strong());
-                        ui.add_space(14.0);
+                        ui.add_space(10.0);
                         form.show(ui, quotes)
                     });
                     match response {
@@ -728,12 +728,19 @@ fn modal_shell<T>(
     width: f32,
     add: impl FnOnce(&mut Ui) -> T,
 ) -> Option<T> {
-    let modal = egui::Modal::new(Id::unique(id))
+    let area_id = Id::unique(id);
+    // Moldura (22 px de cada lado) + um respiro curto até a borda da janela.
+    let max_height = (ctx.content_rect().height() - 68.0).max(280.0);
+    // O tamanho inicial do `Area` precisa já comportar o conteúdo; caso contrário
+    // o `ScrollArea` limita a altura na primeira medição e a área nunca cresce,
+    // deixando a barra de rolagem visível mesmo quando o formulário caberia.
+    let initial_size = egui::vec2(width + 44.0, max_height + 44.0);
+    let modal = egui::Modal::new(area_id)
+        .area(egui::Modal::default_area(area_id).default_size(initial_size))
         .frame(dialog_frame())
         .show(ctx, |ui| {
             ui.set_width(width);
-            // Mantém formulários longos acessíveis em janelas baixas.
-            let max_height = (ctx.content_rect().height() - 120.0).max(280.0);
+            // Só rola quando a janela for realmente baixa demais.
             egui::ScrollArea::vertical()
                 .max_height(max_height)
                 .auto_shrink([false, true])
