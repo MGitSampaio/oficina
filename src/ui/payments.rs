@@ -86,7 +86,7 @@ impl App {
                                                 .color(MUTED),
                                         );
 
-                                        ui.vertical(|ui| {
+                                        w::grid_cell(ui, |ui| {
                                             let name = ui.label(
                                                 RichText::new(&payment.client_name)
                                                     .size(13.0)

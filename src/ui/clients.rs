@@ -80,7 +80,7 @@ impl App {
                                     ui.end_row();
 
                                     for client in &rows {
-                                        ui.vertical(|ui| {
+                                        w::grid_cell(ui, |ui| {
                                             let name = ui.label(
                                                 RichText::new(&client.name)
                                                     .size(13.0)
@@ -100,7 +100,7 @@ impl App {
                                             );
                                         });
 
-                                        ui.vertical(|ui| {
+                                        w::grid_cell(ui, |ui| {
                                             if client.phone.is_empty() && client.email.is_empty() {
                                                 ui.label(
                                                     RichText::new("Sem contato")

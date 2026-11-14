@@ -108,7 +108,7 @@ impl App {
                                     ui.end_row();
 
                                     for item in &rows {
-                                        ui.vertical(|ui| {
+                                        w::grid_cell(ui, |ui| {
                                             let title = ui.label(
                                                 RichText::new(item.title())
                                                     .size(13.0)

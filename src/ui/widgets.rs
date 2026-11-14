@@ -222,6 +222,19 @@ pub fn input_multiline(ui: &mut Ui, value: &mut String, hint: &str, rows: usize)
     )
 }
 
+/// Célula de grade com várias linhas.
+///
+/// O layout vertical normalmente quebra o texto na largura que a coluna tinha
+/// no quadro anterior, impedindo a coluna de crescer. Aqui o texto usa o modo
+/// `Extend`, então a largura da coluna acompanha o maior conteúdo.
+pub fn grid_cell<R>(ui: &mut Ui, add: impl FnOnce(&mut Ui) -> R) -> R {
+    ui.vertical(|ui| {
+        ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Extend);
+        add(ui)
+    })
+    .inner
+}
+
 /// Bloco de formulário: rótulo + campo + espaçamento.
 pub fn field(ui: &mut Ui, label: &str, add: impl FnOnce(&mut Ui)) {
     field_label(ui, label);

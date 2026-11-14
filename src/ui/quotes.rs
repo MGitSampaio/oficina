@@ -119,7 +119,7 @@ impl App {
                                                 .color(FAINT),
                                         );
 
-                                        ui.vertical(|ui| {
+                                        w::grid_cell(ui, |ui| {
                                             let name = ui.label(
                                                 RichText::new(&quote.client_name)
                                                     .size(13.0)
@@ -149,7 +149,7 @@ impl App {
 
                                         w::status_badge(ui, quote.status);
 
-                                        ui.vertical(|ui| {
+                                        w::grid_cell(ui, |ui| {
                                             ui.label(
                                                 RichText::new(money(quote.total_cents()))
                                                     .size(12.5)
