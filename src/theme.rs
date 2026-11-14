@@ -11,10 +11,11 @@ pub const CARD: Color32 = Color32::WHITE;
 pub const BORDER: Color32 = Color32::from_rgb(0xE2, 0xE8, 0xF0);
 pub const SOFT: Color32 = Color32::from_rgb(0xF8, 0xFA, 0xFC);
 
-// Texto
-pub const TEXT: Color32 = Color32::from_rgb(0x15, 0x1F, 0x30);
-pub const MUTED: Color32 = Color32::from_rgb(0x6B, 0x7A, 0x90);
-pub const FAINT: Color32 = Color32::from_rgb(0x94, 0xA3, 0xB8);
+// Texto — os três tons usam a mesma matiz e mantêm a proporção original de
+// luminosidade, apenas escurecidos para melhorar a leitura sobre fundos claros.
+pub const TEXT: Color32 = Color32::from_rgb(0x0F, 0x16, 0x23);
+pub const MUTED: Color32 = Color32::from_rgb(0x4D, 0x58, 0x68);
+pub const FAINT: Color32 = Color32::from_rgb(0x5F, 0x73, 0x90);
 
 // Cores de marca / estados
 pub const PRIMARY: Color32 = Color32::from_rgb(0x25, 0x63, 0xEB);
